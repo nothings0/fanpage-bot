@@ -71,6 +71,7 @@ function handleMessage(senderId, receivedMessage) {
 
 // Xử lý postback khi người dùng nhấn nút
 function handlePostback(senderId, payload) {
+  console.log(payload);
   if (payload === "GET_VOUCHER") {
     sendTextMessage(senderId, "Đã hết voucher, quay lại sau nhé.", [
       {
@@ -81,6 +82,8 @@ function handlePostback(senderId, payload) {
       },
     ]);
   } else if (payload === "GET_STARTED") {
+    console.log(senderId);
+
     sendTextMessage(
       senderId,
       "Chào mừng bạn đến với Fanpage của chúng tôi! Bạn muốn nhận voucher không?",
