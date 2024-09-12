@@ -3,7 +3,8 @@ const bodyParser = require("body-parser");
 const axios = require("axios");
 
 const app = express();
-const PAGE_ACCESS_TOKEN = "YOUR_PAGE_ACCESS_TOKEN"; // Token từ Fanpage của bạn
+const PAGE_ACCESS_TOKEN =
+  "EAAR1hRbsWH0BO7ziBeAW2N1qpe0Et2KXCg3M27iw8VhNlnKduViXRzsmqOwhWd4T2ZAoZCKlV5ZAUAD7hPe4VXvCJoW9lrZC5z2lyoZAiC5SdnEU6L4SI4fBilgZAmL3klaUv50kh4jHnSRRL7zoG5709RY8PixtXo8WIaZB5YNBRpxkKTVZAQZBmf2FSHqvdM98lBQZDZD"; // Token từ Fanpage của bạn
 
 app.use(bodyParser.json());
 
