@@ -4,7 +4,7 @@ const axios = require("axios");
 
 const app = express();
 const PAGE_ACCESS_TOKEN =
-  "EAAR1hRbsWH0BO7ziBeAW2N1qpe0Et2KXCg3M27iw8VhNlnKduViXRzsmqOwhWd4T2ZAoZCKlV5ZAUAD7hPe4VXvCJoW9lrZC5z2lyoZAiC5SdnEU6L4SI4fBilgZAmL3klaUv50kh4jHnSRRL7zoG5709RY8PixtXo8WIaZB5YNBRpxkKTVZAQZBmf2FSHqvdM98lBQZDZD"; // Token từ Fanpage của bạn
+  "EAANHdu97c9oBO5MHsJY1yiXpin9YQHCGKBhWf3RRZA3npTeZBnmZAuy3x3AJNI2sYZCscKTrgzm2x29uiojejLPoIuaXv1eOBLSmTUv8wezcxnksgjgDrfagAgeGoZC1zb1lV1vSU6w1m7fc3WJDl0d7dUHpODMV4PcqHRcdV2IsAuNMCgRLuHgS8tEqjlmQbJwZDZD"; // Token từ Fanpage của bạn
 
 app.use(bodyParser.json());
 
