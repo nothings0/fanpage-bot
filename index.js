@@ -54,7 +54,9 @@ app.post("/webhook", (req, res) => {
 
 // Xử lý tin nhắn từ người dùng
 function handleMessage(senderId, receivedMessage) {
-  if (receivedMessage === "start") {
+  console.log(senderId, receivedMessage);
+
+  if (receivedMessage === "Bắt đầu") {
     sendTextMessage(senderId, "Hello! Bạn muốn nhận voucher không?", [
       {
         type: "postback",
@@ -128,7 +130,7 @@ function callSendAPI(messageData) {
 }
 
 // Chạy server trên port 3000
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên cổng ${PORT}`);
 });
