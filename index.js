@@ -80,6 +80,18 @@ function handlePostback(senderId, payload) {
         webview_height_ratio: "full",
       },
     ]);
+  } else if (payload === "GET_STARTED") {
+    sendTextMessage(
+      senderId,
+      "Chào mừng bạn đến với Fanpage của chúng tôi! Bạn muốn nhận voucher không?",
+      [
+        {
+          type: "postback",
+          title: "Lấy Voucher",
+          payload: "GET_VOUCHER",
+        },
+      ]
+    );
   }
 }
 
