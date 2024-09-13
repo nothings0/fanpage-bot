@@ -56,10 +56,8 @@ app.post("/webhook", (req, res) => {
 
 // Xử lý tin nhắn từ người dùng
 async function handleMessage(senderId, receivedMessage) {
-  console.log(senderId, receivedMessage);
-
   if (receivedMessage === "Bắt đầu") {
-    const name = await getUserProfile();
+    const name = await getUserProfile(senderId);
     sendTextMessage(senderId, `Hello ${name}! Bạn cần hỗ trợ gì không?`, [
       {
         type: "postback",
@@ -68,13 +66,12 @@ async function handleMessage(senderId, receivedMessage) {
       },
     ]);
   } else {
-    sendTextMessage(senderId, 'Vui lòng nhấn nút "Lấy Voucher" để bắt đầu.');
+    sendTextMessage(senderId, "Chúng tôi sẽ quay lại sau!!!");
   }
 }
 
 // Xử lý postback khi người dùng nhấn nút
 function handlePostback(senderId, payload) {
-  console.log(payload);
   if (payload === "GET_VOUCHER") {
     sendTextMessage(
       senderId,
@@ -86,20 +83,28 @@ function handlePostback(senderId, payload) {
           url: "https://t.me/mekoupon", // Thay bằng link nhóm săn deal
           webview_height_ratio: "full",
         },
-      ]
-    );
-  } else if (payload === "GET_STARTED") {
-    sendTextMessage(
-      senderId,
-      "Chào mừng bạn đến với Fanpage của chúng tôi! Bạn muốn nhận voucher không?",
-      [
         {
-          type: "postback",
-          title: "Lấy Voucher",
-          payload: "GET_VOUCHER",
+          type: "web_url",
+          title: "Group Zalo Săn Deal",
+          url: "https://zalo.me/g/rgsdtc474",
+          webview_height_ratio: "full",
         },
       ]
     );
+  } else if (payload === "GET_STARTED") {
+    sendTextMessage(senderId, "Chào mừng bạn đến với mekoupon.com", [
+      {
+        type: "postback",
+        title: "Lấy Voucher",
+        payload: "GET_VOUCHER",
+      },
+      {
+        type: "web_url",
+        title: "Group Zalo Săn Deal",
+        url: "https://zalo.me/g/rgsdtc474",
+        webview_height_ratio: "full",
+      },
+    ]);
   }
 }
 
