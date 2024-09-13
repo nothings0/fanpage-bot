@@ -1,17 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const dotenv = require("dotenv");
+const cron = require("node-cron");
+const { getUserProfile } = require("./helper");
+dotenv.config();
 
 const app = express();
-const PAGE_ACCESS_TOKEN =
-  "EAANHdu97c9oBO17fZACjMIZAN2FPcZA4D8qZBRbFlfiIhN3a0UYZBwD8jtaNTBLxZCwCTk65K8rLgLxhlcH9CmYc0W2tmsRx0fQVjZCKqqaJZCJMOr6Cln7jQ03k9MC2TStJVbm2ICIBbnUbBq223sHGMSzEQ3Ktbuyk2ZCezamd34KUNerAzXfhzMwZAsBllMh5ZAkgQZDZD"; // Thay bằng token của fanpage
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN; // Thay bằng token của fanpage
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN; // Thay bằng token của fanpage
 
 app.use(bodyParser.json());
 
 // Xác thực webhook từ Facebook
 app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "nothings0"; // Token do bạn tự đặt để xác thực
-
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
@@ -53,14 +55,15 @@ app.post("/webhook", (req, res) => {
 });
 
 // Xử lý tin nhắn từ người dùng
-function handleMessage(senderId, receivedMessage) {
+async function handleMessage(senderId, receivedMessage) {
   console.log(senderId, receivedMessage);
 
   if (receivedMessage === "Bắt đầu") {
-    sendTextMessage(senderId, "Hello! Bạn muốn nhận voucher không?", [
+    const name = await getUserProfile();
+    sendTextMessage(senderId, `Hello ${name}! Bạn cần hỗ trợ gì không?`, [
       {
         type: "postback",
-        title: "Lấy Voucher",
+        title: "Lấy Voucher Shopee",
         payload: "GET_VOUCHER",
       },
     ]);
@@ -73,17 +76,19 @@ function handleMessage(senderId, receivedMessage) {
 function handlePostback(senderId, payload) {
   console.log(payload);
   if (payload === "GET_VOUCHER") {
-    sendTextMessage(senderId, "Đã hết voucher, quay lại sau nhé.", [
-      {
-        type: "web_url",
-        title: "Vào nhóm săn deal",
-        url: "https://link-to-group.com", // Thay bằng link nhóm săn deal
-        webview_height_ratio: "full",
-      },
-    ]);
+    sendTextMessage(
+      senderId,
+      "😢 Hết lượt dùng voucher rồi, bạn hãy quay lại vào lúc 0h | 12h để lấy nha",
+      [
+        {
+          type: "web_url",
+          title: "Kênh lấy voucher",
+          url: "https://t.me/mekoupon", // Thay bằng link nhóm săn deal
+          webview_height_ratio: "full",
+        },
+      ]
+    );
   } else if (payload === "GET_STARTED") {
-    console.log(senderId);
-
     sendTextMessage(
       senderId,
       "Chào mừng bạn đến với Fanpage của chúng tôi! Bạn muốn nhận voucher không?",
@@ -143,6 +148,20 @@ function callSendAPI(messageData) {
       );
     });
 }
+
+app.get("/ping", () => {
+  return "pong";
+});
+
+cron.schedule("*/12 * * * *", async () => {
+  try {
+    const response = await axios("https://fanpage-bot.onrender.com/ping");
+    const data = await response.data;
+    console.log(data);
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+});
 
 // Chạy server trên port 3000
 const PORT = 3000;
